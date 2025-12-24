@@ -1,6 +1,8 @@
 #ifndef DIODE_H
 #define DIODE_H
 
+#include <curriculo/platform/testing/diode/poll.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif

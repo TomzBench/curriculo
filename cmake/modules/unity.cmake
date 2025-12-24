@@ -113,8 +113,8 @@ function(cmock_headers_prepare HEADER)
     get_filename_component(HEADER_NAME ${HEADER} NAME)
     get_filename_component(HEADER_ABS ${HEADER} ABSOLUTE)
 
-    set(STRIPPED_HEADER "${CMOCK_PRODUCTS_DIR}/internal/${HEADER_NAME}")
-    set(WRAPPED_HEADER "${CMOCK_PRODUCTS_DIR}/internal/__wrap_${HEADER_NAME}")
+    set(STRIPPED_HEADER "${CMOCK_PRODUCTS_DIR}/internal/stripped_${HEADER_NAME}")
+    set(WRAPPED_HEADER "${CMOCK_PRODUCTS_DIR}/internal/${HEADER_NAME}")
 
     # Generate prepared headers at configure time
     execute_process(
@@ -147,8 +147,8 @@ function(cmock_generate TARGET HEADER)
     get_filename_component(HEADER_NAME ${HEADER} NAME_WE)
 
     # CMock outputs unity_mock_<name>.c and unity_mock_<name>.h
-    set(MOCK_SOURCE "${CMOCK_PRODUCTS_DIR}/unity_mock___wrap_${HEADER_NAME}.c")
-    set(MOCK_HEADER "${CMOCK_PRODUCTS_DIR}/unity_mock___wrap_${HEADER_NAME}.h")
+    set(MOCK_SOURCE "${CMOCK_PRODUCTS_DIR}/unity_mock_${HEADER_NAME}.c")
+    set(MOCK_HEADER "${CMOCK_PRODUCTS_DIR}/unity_mock_${HEADER_NAME}.h")
 
     # Generate mock at configure time using CMock's lib/cmock.rb directly
     # NOTE: mock_prefix must match unity_cfg.yaml

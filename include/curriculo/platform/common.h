@@ -7,13 +7,18 @@ extern "C" {
 
 #ifdef PLATFORM_LINUX
 #include <assert.h>
+#include <stdarg.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
-#include <stdio.h>  /* IWYU pragma: keep (pal_assert) */
+#include <stdio.h> /* IWYU pragma: keep (pal_assert) */
+#include <stdlib.h>
 #include <stdlib.h> /* IWYU pragma: keep (pal_assert) */
+#include <string.h> /* IWYU pragma: keep (or add an include guard for testing */
 #include <sys/poll.h>
 
+#define pal_malloc(x) malloc(x)
+#define pal_free(x) free(x)
 #define pal_assert(cond, fmt, ...)                                             \
   do {                                                                         \
     if (!(cond)) {                                                             \

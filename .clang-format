@@ -1,10 +1,8 @@
 BasedOnStyle: LLVM
 ColumnLimit: 80
-
 # Return type on its own line, brace on new line for functions
 BreakAfterReturnType: All
 BreakBeforeBraces: Linux
-
-# One arg per line when wrapping
 BinPackParameters: false
 BinPackArguments: false
+AllowAllParametersOfDeclarationOnNextLine: false

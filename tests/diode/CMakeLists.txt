@@ -1,6 +1,6 @@
 find_package(CMock REQUIRED)
 
-set(TEST_SOURCES src/test_poll.c src/test_recv.c)
+set(TEST_SOURCES src/test_connect.c src/test_listen.c src/test_poll.c src/test_recv.c src/test_send.c)
 
 foreach(TEST_FILE ${TEST_SOURCES})
     get_filename_component(TEST_NAME ${TEST_FILE} NAME_WE)

@@ -1,7 +1,10 @@
 #ifndef DIODE_H
 #define DIODE_H
 
+#include <qwiet/platform/testing/diode/net_connect.h>
+#include <qwiet/platform/testing/diode/net_listen.h>
 #include <qwiet/platform/testing/diode/net_poll.h>
+#include <qwiet/platform/testing/diode/net_send.h>
 
 #ifdef __cplusplus
 extern "C" {

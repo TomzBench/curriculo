@@ -22,7 +22,7 @@ ignore = [
 ]
 
 [lint.isort]
-known-first-party = ["curriculo"]
+known-first-party = ["qwiet"]
 
 [format]
 quote-style = "double"

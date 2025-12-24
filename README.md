@@ -1,4 +1,4 @@
-# Curriculo
+# Qwiet
 
 Platform abstraction layer for embedded Linux and e-ink devices.
 
@@ -21,7 +21,7 @@ cmake --build build
 
 | Command                                                 | Targets                                                 |
 | ------------------------------------------------------- | ------------------------------------------------------- |
-| `cmake -B build -DPLATFORM=linux`                       | `curriculo_pal`, `libevdev`                             |
-| `cmake -B build -DPLATFORM=linux -DBUILD_TESTING=ON`    | `curriculo_pal`, `libevdev`, `curriculo_diode`, `unity` |
-| `cmake -B build -DPLATFORM=pinenote`                    | `curriculo_pal`, `libevdev`                             |
-| `cmake -B build -DPLATFORM=pinenote -DBUILD_TESTING=ON` | `curriculo_pal`, `libevdev`, `curriculo_diode`, `unity` |
+| `cmake -B build -DPLATFORM=linux`                       | `qwiet_pal`, `libevdev`                             |
+| `cmake -B build -DPLATFORM=linux -DBUILD_TESTING=ON`    | `qwiet_pal`, `libevdev`, `qwiet_diode`, `unity` |
+| `cmake -B build -DPLATFORM=pinenote`                    | `qwiet_pal`, `libevdev`                             |
+| `cmake -B build -DPLATFORM=pinenote -DBUILD_TESTING=ON` | `qwiet_pal`, `libevdev`, `qwiet_diode`, `unity` |

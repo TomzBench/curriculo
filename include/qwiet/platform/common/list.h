@@ -5,10 +5,10 @@
  * Adapted from the Linux kernel (include/linux/list.h) for userspace use.
  * Original authors: Linux kernel developers
  */
-#ifndef CURRICULO_PLATFORM_COMMON_LIST_H
-#define CURRICULO_PLATFORM_COMMON_LIST_H
+#ifndef QWIET_PLATFORM_COMMON_LIST_H
+#define QWIET_PLATFORM_COMMON_LIST_H
 
-#include "curriculo/platform/common/macros.h"
+#include "qwiet/platform/common/macros.h"
 
 struct pal_list_head {
   struct pal_list_head *next, *prev;
@@ -809,4 +809,4 @@ pal_list_count_nodes(struct pal_list_head *head)
 #define pal_list_safe_reset_next(pos, n, member)                               \
   n = pal_list_next_entry(pos, member)
 
-#endif /* CURRICULO_PLATFORM_COMMON_LIST_H */
+#endif /* QWIET_PLATFORM_COMMON_LIST_H */

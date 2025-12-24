@@ -1,4 +1,4 @@
-#include <curriculo/platform/event.h>
+#include <qwiet/platform/event.h>
 #include <sys/eventfd.h>
 #include <unistd.h>
 

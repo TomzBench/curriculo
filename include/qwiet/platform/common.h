@@ -1,5 +1,5 @@
-#ifndef CURRICULO_COMMON_H
-#define CURRICULO_COMMON_H
+#ifndef QWIET_COMMON_H
+#define QWIET_COMMON_H
 
 #ifdef __cplusplus
 extern "C" {

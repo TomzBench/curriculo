@@ -1,7 +1,7 @@
-#ifndef CURRICULO_EVENT_H
-#define CURRICULO_EVENT_H
+#ifndef QWIET_EVENT_H
+#define QWIET_EVENT_H
 
-#include <curriculo/platform/common.h>
+#include <qwiet/platform/common.h>
 
 #ifdef __cplusplus
 extern "C" {

@@ -1,11 +1,11 @@
 #include <stdbool.h>
 #include <unity.h>
 
-#include "curriculo/platform/testing/diode/poll.h"
+#include "qwiet/platform/testing/diode/poll.h"
 #include "stubs.h"
 #include "unity_mock_stubs.h"
-#include <curriculo/platform/net.h>
-#include <curriculo/platform/testing/diode.h>
+#include <qwiet/platform/net.h>
+#include <qwiet/platform/testing/diode.h>
 
 void
 setUp(void)

@@ -1,5 +1,5 @@
 #include <arpa/inet.h>
-#include <curriculo/platform/net.h>
+#include <qwiet/platform/net.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <netinet/in.h>

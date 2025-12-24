@@ -1,7 +1,7 @@
 #include <stdbool.h>
 #include <unity.h>
 
-#include "curriculo/platform/common/list.h"
+#include "qwiet/platform/common/list.h"
 
 struct test_item {
   int value;

@@ -1,4 +1,4 @@
-#include <curriculo/platform/testing/diode/poll.h>
+#include <qwiet/platform/testing/diode/poll.h>
 
 void
 diode_init(void)

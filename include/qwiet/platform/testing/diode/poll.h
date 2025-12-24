@@ -1,8 +1,8 @@
 #ifndef DIODE_POLL_H
 #define DIODE_POLL_H
 
-#include <curriculo/platform/common/list.h>
-#include <curriculo/platform/net.h>
+#include <qwiet/platform/common/list.h>
+#include <qwiet/platform/net.h>
 
 struct poll_expectation {
   struct pal_list_head node;

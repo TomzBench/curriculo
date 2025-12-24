@@ -1,8 +1,8 @@
 #include "unity.h"
 #include "unity_mock_net.h"
-#include <curriculo/platform/common.h>
-#include <curriculo/platform/common/list.h>
-#include <curriculo/platform/testing/diode/poll.h>
+#include <qwiet/platform/common.h>
+#include <qwiet/platform/common/list.h>
+#include <qwiet/platform/testing/diode/poll.h>
 
 static struct pal_list_head __list;
 

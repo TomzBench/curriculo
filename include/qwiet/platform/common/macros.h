@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: GPL-2.0 */
-#ifndef CURRICULO_PLATFORM_COMMON_MACROS_H
-#define CURRICULO_PLATFORM_COMMON_MACROS_H
+#ifndef QWIET_PLATFORM_COMMON_MACROS_H
+#define QWIET_PLATFORM_COMMON_MACROS_H
 
 #include <stddef.h>
 
@@ -43,4 +43,4 @@
                              ...)                                              \
   N
 
-#endif /* CURRICULO_PLATFORM_COMMON_MACROS_H */
+#endif /* QWIET_PLATFORM_COMMON_MACROS_H */

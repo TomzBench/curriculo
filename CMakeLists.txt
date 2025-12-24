@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(curriculo C)
+project(qwiet C)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
 

@@ -1,5 +1,5 @@
-#ifndef CURRICULO_TIME_H
-#define CURRICULO_TIME_H
+#ifndef QWIET_TIME_H
+#define QWIET_TIME_H
 
 #ifdef __cplusplus
 extern "C" {

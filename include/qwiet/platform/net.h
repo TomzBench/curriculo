@@ -1,7 +1,7 @@
-#ifndef CURRICULO_NET_H
-#define CURRICULO_NET_H
+#ifndef QWIET_NET_H
+#define QWIET_NET_H
 
-#include <curriculo/platform/common.h>
+#include <qwiet/platform/common.h>
 
 #ifdef __cplusplus
 extern "C" {

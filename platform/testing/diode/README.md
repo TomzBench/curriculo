@@ -24,8 +24,8 @@ you choose depends on the complexity of the function being mocked.
 
 **Use the heap pattern when:**
 
-- The function mutates arguments through pointers (e.g., `poll()` modifying
-  `revents`)
+- The function mutates arguments through pointers in complex ways (e.g.,
+  `poll()` modifying `revents`)
 - Complex inputs require initializing structures for Unity to validate against
 - Multiple related values must be captured together for the validator
 - Thread synchronization is needed between test setup and mock invocation
@@ -114,10 +114,9 @@ hide.
 
 When reviewing AI-generated tests, pay particular attention to:
 
+- **Redundant test coverage** - is the proposed test case already tested?
 - **Error path coverage** — what happens when the mocked function fails? Are all
   error codes exercised?
-- **Boundary conditions** — are edge cases like zero-length buffers, maximum
-  values, or empty lists tested?
 - **Validation logic coverage** — does the test actually exercise the mock's
   validation? A test that never triggers the validator provides false
   confidence.

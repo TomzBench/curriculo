@@ -7,11 +7,7 @@
 #
 # Requires: meson, ninja
 
-include(ExternalProject)
-
-# Find meson - prefer project venv
-find_program(MESON_EXECUTABLE meson HINTS ${CMAKE_SOURCE_DIR}/.venv/bin REQUIRED)
-
+# Path variables (set before guard so they're available on repeated includes)
 set(LIBEVDEV_VERSION "1.13.6")
 set(LIBEVDEV_PREFIX "${CMAKE_BINARY_DIR}/external/libevdev")
 set(LIBEVDEV_INSTALL_DIR "${LIBEVDEV_PREFIX}/install")
@@ -19,6 +15,16 @@ set(LIBEVDEV_INCLUDE_DIR "${LIBEVDEV_INSTALL_DIR}/include/libevdev-1.0")
 set(LIBEVDEV_LIBRARY "${LIBEVDEV_INSTALL_DIR}/lib/libevdev.a")
 set(LIBEVDEV_SOURCE_DIR "${LIBEVDEV_PREFIX}/src/libevdev_external")
 set(LIBEVDEV_BUILD_DIR "${LIBEVDEV_SOURCE_DIR}-build")
+
+# Guard against multiple inclusions (target creation)
+if(TARGET libevdev::libevdev)
+    return()
+endif()
+
+include(ExternalProject)
+
+# Find meson - prefer project venv
+find_program(MESON_EXECUTABLE meson HINTS ${CMAKE_SOURCE_DIR}/.venv/bin REQUIRED)
 
 set(LIBEVDEV_MESON_ARGS
     --prefix=${LIBEVDEV_INSTALL_DIR}

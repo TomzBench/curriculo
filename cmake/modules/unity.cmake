@@ -22,7 +22,9 @@ set_property(GLOBAL PROPERTY CMOCK_FUNC_NAME_LIST_PY "${CMAKE_SOURCE_DIR}/tools/
 # Config files (GLOBAL so functions can access)
 set_property(GLOBAL PROPERTY CMOCK_CFG_FILE "${CMAKE_SOURCE_DIR}/cmake/modules/unity_cfg.yaml")
 set_property(GLOBAL PROPERTY CMOCK_CONFIG_H "${CMAKE_SOURCE_DIR}/cmake/modules/unity_config.h")
-set_property(GLOBAL PROPERTY CMOCK_GENERIC_TEARDOWN_C "${CMAKE_SOURCE_DIR}/platform/testing/${PLATFORM}/generic_teardown.c")
+set_property(
+    GLOBAL PROPERTY CMOCK_GENERIC_TEARDOWN_C "${CMAKE_SOURCE_DIR}/platform/testing/${PLATFORM}/generic_teardown.c"
+)
 
 # Mock output directory (GLOBAL so functions can access)
 set(CMOCK_PRODUCTS_DIR "${CMAKE_BINARY_DIR}/cmock_products")
@@ -179,4 +181,19 @@ endfunction()
 function(cmock_handle TARGET HEADER)
     cmock_generate(${TARGET} ${HEADER})
     cmock_linker_wrap(${TARGET} ${HEADER})
+endfunction()
+
+# Conditionally generate mock based on platform
+#
+# Usage:
+#   cmock_handle_ifdef(PLATFORM_LINUX my_target src/stubs.h)
+#
+# Only generates mock if the specified condition matches current PLATFORM.
+# Condition should be PLATFORM_<name> where <name> matches a valid platform.
+function(cmock_handle_ifdef CONDITION TARGET HEADER)
+    string(REGEX REPLACE "^PLATFORM_" "" PLATFORM_NAME "${CONDITION}")
+    string(TOLOWER "${PLATFORM_NAME}" PLATFORM_NAME_LOWER)
+    if(PLATFORM STREQUAL "${PLATFORM_NAME_LOWER}")
+        cmock_handle(${TARGET} ${HEADER})
+    endif()
 endfunction()

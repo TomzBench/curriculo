@@ -8,6 +8,8 @@ extern "C" {
 #ifdef PLATFORM_LINUX
 #include <assert.h>
 #include <limits.h>
+#include <linux/input-event-codes.h>
+#include <linux/input.h>
 #include <semaphore.h>
 #include <stdarg.h>
 #include <stdbool.h>

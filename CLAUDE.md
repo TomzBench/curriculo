@@ -22,3 +22,11 @@ Run all code through formatters before presenting for commit:
 
 If a formatter config doesn't exist for a file type, stop and create one before
 proceeding. Never commit code formatted with implicit defaults.
+
+## Domain-Specific Conventions
+
+Check these READMEs when working in their respective areas:
+
+| Area    | Documentation                      |
+| ------- | ---------------------------------- |
+| Testing | `platform/testing/diode/README.md` |

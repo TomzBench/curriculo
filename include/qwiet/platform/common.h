@@ -7,6 +7,8 @@ extern "C" {
 
 #ifdef PLATFORM_LINUX
 #include <assert.h>
+#include <limits.h>
+#include <semaphore.h>
 #include <stdarg.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -16,6 +18,7 @@ extern "C" {
 #include <stdlib.h> /* IWYU pragma: keep (pal_assert) */
 #include <string.h> /* IWYU pragma: keep (or add an include guard for testing */
 #include <sys/poll.h>
+#include <time.h>
 
 #define pal_malloc(x) malloc(x)
 #define pal_free(x) free(x)

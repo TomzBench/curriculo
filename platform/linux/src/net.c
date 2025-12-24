@@ -1,8 +1,8 @@
 #include <arpa/inet.h>
-#include <qwiet/platform/net.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <netinet/in.h>
+#include <qwiet/platform/net.h>
 #include <sys/socket.h>
 #include <unistd.h>
 
@@ -69,15 +69,15 @@ pal_net_socket_set_nonblocking(int sock, bool non_blocking)
 }
 
 int
-pal_net_send(int sock, const void *buf, uint16_t len)
+pal_net_send(int sock, const void *buf, uint16_t len, int flags)
 {
-  return (int)send(sock, buf, len, 0);
+  return (int)send(sock, buf, len, flags);
 }
 
 int
-pal_net_recv(int sock, uint8_t *buf, uint16_t len)
+pal_net_recv(int sock, uint8_t *buf, uint16_t len, int flags)
 {
-  return (int)recv(sock, buf, len, 0);
+  return (int)recv(sock, buf, len, flags);
 }
 
 int

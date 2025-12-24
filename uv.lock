@@ -69,36 +69,6 @@ wheels = [
 ]
 
 [[package]]
-name = "curriculo"
-version = "0.1.0"
-source = { virtual = "." }
-
-[package.optional-dependencies]
-dev = [
-    { name = "basedpyright" },
-    { name = "cmake-format", extra = ["yaml"] },
-    { name = "mypy" },
-    { name = "ruff" },
-]
-
-[package.dev-dependencies]
-dev = [
-    { name = "clang-format" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "basedpyright", marker = "extra == 'dev'", specifier = ">=1.22.0" },
-    { name = "cmake-format", extras = ["yaml"], marker = "extra == 'dev'", specifier = ">=0.6.13" },
-    { name = "mypy", marker = "extra == 'dev'", specifier = ">=1.13.0" },
-    { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.8.0" },
-]
-provides-extras = ["dev"]
-
-[package.metadata.requires-dev]
-dev = [{ name = "clang-format", specifier = ">=21.1.8" }]
-
-[[package]]
 name = "librt"
 version = "0.7.4"
 source = { registry = "https://pypi.org/simple" }
@@ -159,6 +129,15 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/d6/49/3732b0e8424ae35ad5c3166d9dd5bcdae43ce98775e0867a716ff5868064/librt-0.7.4-cp314-cp314t-win32.whl", hash = "sha256:8a461f6456981d8c8e971ff5a55f2e34f4e60871e665d2f5fde23ee74dea4eeb", size = 40276, upload-time = "2025-12-15T16:52:27.54Z" },
     { url = "https://files.pythonhosted.org/packages/35/d6/d8823e01bd069934525fddb343189c008b39828a429b473fb20d67d5cd36/librt-0.7.4-cp314-cp314t-win_amd64.whl", hash = "sha256:721a7b125a817d60bf4924e1eec2a7867bfcf64cfc333045de1df7a0629e4481", size = 46772, upload-time = "2025-12-15T16:52:28.653Z" },
     { url = "https://files.pythonhosted.org/packages/36/e9/a0aa60f5322814dd084a89614e9e31139702e342f8459ad8af1984a18168/librt-0.7.4-cp314-cp314t-win_arm64.whl", hash = "sha256:76b2ba71265c0102d11458879b4d53ccd0b32b0164d14deb8d2b598a018e502f", size = 39724, upload-time = "2025-12-15T16:52:29.836Z" },
+]
+
+[[package]]
+name = "meson"
+version = "1.10.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/45/76/c2f4cff5dabcd64711bd327dd00fd22ec603bed6a928dd5d058044d568d8/meson-1.10.0.tar.gz", hash = "sha256:8071860c1f46a75ea34801490fd1c445c9d75147a65508cd3a10366a7006cc1c", size = 2412381, upload-time = "2025-12-08T17:14:57.124Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/32/4f/c398c6f06ece1c6c246e008d5dac3824c98f54d3eb3d8014f4910afd6d48/meson-1.10.0-py3-none-any.whl", hash = "sha256:4b27aafce281e652dcb437b28007457411245d975c48b5db3a797d3e93ae1585", size = 1057029, upload-time = "2025-12-08T17:14:55.038Z" },
 ]
 
 [[package]]
@@ -288,6 +267,32 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/f0/7a/1c7270340330e575b92f397352af856a8c06f230aa3e76f86b39d01b416a/pyyaml-6.0.3-cp314-cp314t-win_amd64.whl", hash = "sha256:4ad1906908f2f5ae4e5a8ddfce73c320c2a1429ec52eafd27138b7f1cbe341c9", size = 174062, upload-time = "2025-09-25T21:32:55.767Z" },
     { url = "https://files.pythonhosted.org/packages/f1/12/de94a39c2ef588c7e6455cfbe7343d3b2dc9d6b6b2f40c4c6565744c873d/pyyaml-6.0.3-cp314-cp314t-win_arm64.whl", hash = "sha256:ebc55a14a21cb14062aa4162f906cd962b28e2e9ea38f9b4391244cd8de4ae0b", size = 149341, upload-time = "2025-09-25T21:32:56.828Z" },
 ]
+
+[[package]]
+name = "qwiet"
+version = "0.1.0"
+source = { virtual = "." }
+
+[package.optional-dependencies]
+dev = [
+    { name = "basedpyright" },
+    { name = "clang-format" },
+    { name = "cmake-format", extra = ["yaml"] },
+    { name = "meson" },
+    { name = "mypy" },
+    { name = "ruff" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "basedpyright", marker = "extra == 'dev'", specifier = ">=1.22.0" },
+    { name = "clang-format", marker = "extra == 'dev'", specifier = ">=21.1.8" },
+    { name = "cmake-format", extras = ["yaml"], marker = "extra == 'dev'", specifier = ">=0.6.13" },
+    { name = "meson", marker = "extra == 'dev'", specifier = ">=1.10.0" },
+    { name = "mypy", marker = "extra == 'dev'", specifier = ">=1.13.0" },
+    { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.8.0" },
+]
+provides-extras = ["dev"]
 
 [[package]]
 name = "ruff"

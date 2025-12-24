@@ -7,13 +7,10 @@ dependencies = []
 
 [project.optional-dependencies]
 dev = [
-    "cmake-format[yaml]>=0.6.13",
     "basedpyright>=1.22.0",
-    "ruff>=0.8.0",
-    "mypy>=1.13.0",
-]
-
-[dependency-groups]
-dev = [
     "clang-format>=21.1.8",
+    "cmake-format[yaml]>=0.6.13",
+    "meson>=1.10.0",
+    "mypy>=1.13.0",
+    "ruff>=0.8.0",
 ]

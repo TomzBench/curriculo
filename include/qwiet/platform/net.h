@@ -23,10 +23,10 @@ void
 pal_net_socket_set_nonblocking(int sock, bool non_blocking);
 
 int
-pal_net_send(int sock, const void *buf, uint16_t len);
+pal_net_send(int sock, const void *buf, uint16_t len, int flags);
 
 int
-pal_net_recv(int sock, uint8_t *buf, uint16_t len);
+pal_net_recv(int sock, uint8_t *buf, uint16_t len, int flags);
 
 int
 pal_net_connect(int sock, const char *ip, int port);

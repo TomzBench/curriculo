@@ -1,8 +1,11 @@
 find_package(CMock REQUIRED)
 
-test_runner_generate(test_diode src/test.c)
+set(TEST_SOURCES src/test_poll.c src/test_recv.c)
 
-target_include_directories(test_diode PRIVATE src)
-target_link_libraries(test_diode PRIVATE qwiet_diode)
+foreach(TEST_FILE ${TEST_SOURCES})
+    get_filename_component(TEST_NAME ${TEST_FILE} NAME_WE)
 
-cmock_handle(test_diode src/stubs.h)
+    test_runner_generate(${TEST_NAME} ${TEST_FILE})
+    target_include_directories(${TEST_NAME} PRIVATE src)
+    target_link_libraries(${TEST_NAME} PRIVATE qwiet_diode)
+endforeach()

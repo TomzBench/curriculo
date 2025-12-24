@@ -10,13 +10,13 @@ struct poll_expectation {
   struct pollfd fds[];
 };
 
-#define EXPECT_POLL_ERR(__timeout, __events, __e, ...)                         \
-  EXPECT_POLL(__timeout, __events, NULL, __e, __VA_ARGS__)
+#define EXPECT_NET_POLL_ERR(__timeout, __events, __e, ...)                         \
+  EXPECT_NET_POLL(__timeout, __events, NULL, __e, __VA_ARGS__)
 
-#define EXPECT_POLL_OK(__timeout, __events, __revents, ...)                    \
-  EXPECT_POLL(__timeout, __events, __revents, 0, __VA_ARGS__)
+#define EXPECT_NET_POLL_OK(__timeout, __events, __revents, ...)                    \
+  EXPECT_NET_POLL(__timeout, __events, __revents, 0, __VA_ARGS__)
 
-#define EXPECT_POLL(__timeout, __events, __revents, __ret, ...)                \
+#define EXPECT_NET_POLL(__timeout, __events, __revents, __ret, ...)                \
   diode_poll_create_expectation(__timeout,                                     \
                                 PAL_NUM_VA_ARGS(__VA_ARGS__),                  \
                                 __events,                                      \

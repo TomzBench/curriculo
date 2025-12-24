@@ -2,7 +2,7 @@
 #include "unity_mock_net.h"
 #include <qwiet/platform/common.h>
 #include <qwiet/platform/common/list.h>
-#include <qwiet/platform/testing/diode/poll.h>
+#include <qwiet/platform/testing/diode/net_poll.h>
 
 static struct pal_list_head __list;
 

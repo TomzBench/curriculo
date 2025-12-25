@@ -1,7 +1,7 @@
 #ifndef DIODE_RECV_H
 #define DIODE_RECV_H
 
-#include <qwiet/platform/net.h>
+#include <qwiet/platform/posix/net.h>
 #include "unity_mock_net.h"
 
 #define EXPECT_NET_RECV(__socket, __length, __buff, __flags, __ret)            \

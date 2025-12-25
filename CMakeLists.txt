@@ -17,8 +17,8 @@ endif()
 
 message(STATUS "Building for platform: ${PLATFORM}")
 
-# Platform-specific subdirectory
-add_subdirectory(platform/${PLATFORM})
+# Platform abstraction layer (composes traits based on PLATFORM)
+add_subdirectory(platform)
 
 # Test support library (cmake -DBUILD_TESTING=ON)
 option(BUILD_TESTING "Build test support" OFF)

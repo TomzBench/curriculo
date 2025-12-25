@@ -6,7 +6,7 @@
 #define QWIET_TIMER_H
 
 #include <qwiet/platform/common.h>
-#include <qwiet/platform/time.h>
+#include <qwiet/platform/posix/time.h>
 
 #ifdef __cplusplus
 extern "C" {

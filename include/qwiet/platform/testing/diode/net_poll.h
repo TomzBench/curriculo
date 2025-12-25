@@ -2,7 +2,7 @@
 #define DIODE_POLL_H
 
 #include <qwiet/platform/common/list.h>
-#include <qwiet/platform/net.h>
+#include <qwiet/platform/posix/net.h>
 
 struct poll_expectation {
   struct pal_list_head node;

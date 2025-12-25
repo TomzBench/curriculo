@@ -1,8 +1,8 @@
 #include <stdbool.h>
 #include <unity.h>
 
-#include <qwiet/platform/time.h>
-#include <qwiet/platform/timer.h>
+#include <qwiet/platform/posix/time.h>
+#include <qwiet/platform/linux/timer.h>
 
 pal_timer_t test_timer;
 

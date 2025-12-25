@@ -2,7 +2,7 @@
 #define DIODE_CONNECT_H
 
 #include "unity_mock_net.h"
-#include <qwiet/platform/net.h>
+#include <qwiet/platform/posix/net.h>
 
 // NOTE: The PAL abstraction layer does not currently expose error types.
 // All failures return -1. When error type support is added, expand this

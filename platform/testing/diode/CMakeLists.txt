@@ -13,7 +13,7 @@ add_library(qwiet_diode ${DIODE_SOURCES})
 target_link_libraries(qwiet_diode PUBLIC unity cmock qwiet_pal)
 
 # Cross-platform mocks
-cmock_handle(qwiet_diode ${CMAKE_SOURCE_DIR}/include/qwiet/platform/net.h)
+cmock_handle(qwiet_diode ${CMAKE_SOURCE_DIR}/include/qwiet/platform/posix/net.h)
 
 # Linux-specific mocks
 if(PLATFORM STREQUAL "linux")

@@ -2,7 +2,7 @@
 #include <unity.h>
 
 #include "qwiet/platform/testing/diode/net_poll.h"
-#include <qwiet/platform/net.h>
+#include <qwiet/platform/posix/net.h>
 #include <qwiet/platform/testing/diode.h>
 
 void

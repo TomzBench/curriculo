@@ -450,6 +450,50 @@ Wrap only the required LVGL functions:
 
 ---
 
+## Platform Abstraction Layer (PAL)
+
+The C FFI layer is organized using **trait-based decomposition** — each folder
+provides a specific capability rather than targeting a specific device.
+
+### Folder Structure
+
+```
+platform/
+  posix/        # Portable POSIX (time, sem, net)
+  linux/        # Linux kernel APIs (eventfd, timerfd, evdev)
+
+include/qwiet/platform/
+  common.h      # Base layer (pal_assert, pal_malloc)
+  posix/        # Portable headers (time.h, sem.h, net.h)
+  linux/        # Linux-specific (event.h, timer.h, input_evdev.h)
+```
+
+evdev lives in `linux/` because libevdev only works on Linux — no portability
+gained by separating it.
+
+### Design Principles
+
+**Composability**: CMake composes traits per target:
+
+- Linux (desktop/PineNote): `posix + linux`
+- Future Zephyr: `zephyr + zephyr-input`
+
+**Zero-cost escape hatches**: Portable headers abstract for convenience;
+platform headers expose concrete types for performance-critical paths:
+
+| Level    | Include                                | Tradeoff               |
+| -------- | -------------------------------------- | ---------------------- |
+| Portable | `<qwiet/platform/posix/net.h>`         | Works on POSIX systems |
+| Platform | `<qwiet/platform/linux/input_evdev.h>` | Zero-cost, Linux-only  |
+| Raw      | `<libevdev/libevdev.h>`                | Full control, no PAL   |
+
+For high-frequency input (stylus events), applications include platform headers
+directly to avoid abstraction overhead.
+
+**Explicit dependencies**: Each trait declares what it needs in CMake.
+
+---
+
 ## Async Pattern (No Tokio)
 
 The application uses Rust's async/await ergonomics without the tokio runtime

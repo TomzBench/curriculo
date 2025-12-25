@@ -1,4 +1,4 @@
-#include <qwiet/platform/event.h>
+#include <qwiet/platform/linux/event.h>
 #include <sys/eventfd.h>
 #include <unistd.h>
 

@@ -1,7 +1,7 @@
 #include <sys/timerfd.h>
 #include <unistd.h>
 
-#include <qwiet/platform/timer.h>
+#include <qwiet/platform/linux/timer.h>
 
 void
 pal_timer_init(pal_timer_t *timer)

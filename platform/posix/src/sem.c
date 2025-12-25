@@ -1,5 +1,5 @@
 #include <errno.h>
-#include <qwiet/platform/sem.h>
+#include <qwiet/platform/posix/sem.h>
 
 void
 pal_sem_init(pal_sem_t *sem, unsigned int value)

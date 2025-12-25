@@ -1,6 +1,6 @@
 #include <errno.h>
 
-#include <qwiet/platform/time.h>
+#include <qwiet/platform/posix/time.h>
 #include <time.h>
 
 int

@@ -1,6 +1,6 @@
 #include "unity.h"
-#include <qwiet/platform/sem.h>
-#include <qwiet/platform/time.h>
+#include <qwiet/platform/posix/sem.h>
+#include <qwiet/platform/posix/time.h>
 
 void
 setUp(void)

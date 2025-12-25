@@ -1,7 +1,7 @@
 #include <stdbool.h>
 #include <unity.h>
 
-#include <qwiet/platform/net.h>
+#include <qwiet/platform/posix/net.h>
 #include <qwiet/platform/testing/diode.h>
 #include <qwiet/platform/testing/diode/net_send.h>
 

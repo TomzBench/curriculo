@@ -29,7 +29,7 @@ test_timer_oneshot(void)
   TEST_ASSERT_TRUE(pal_timer_is_ready(&test_timer));
 
   /* Ack the expiration */
-  TEST_ASSERT_EQUAL_UINT64(1, pal_timer_ack(&test_timer));
+  TEST_ASSERT_EQUAL_UINT64(1, pal_timer_read(&test_timer));
   TEST_ASSERT_FALSE(pal_timer_is_ready(&test_timer));
 
   /* Oneshot should not fire again */
@@ -48,7 +48,7 @@ test_timer_periodic(void)
   TEST_ASSERT_TRUE(pal_timer_is_ready(&test_timer));
 
   /* Ack the expiration */
-  TEST_ASSERT_TRUE(pal_timer_ack(&test_timer) >= 1);
+  TEST_ASSERT_TRUE(pal_timer_read(&test_timer) >= 1);
   TEST_ASSERT_FALSE(pal_timer_is_ready(&test_timer));
 
   /* Wait for second expiration */
@@ -56,7 +56,7 @@ test_timer_periodic(void)
   TEST_ASSERT_TRUE(pal_timer_is_ready(&test_timer));
 
   /* Ack again */
-  TEST_ASSERT_TRUE(pal_timer_ack(&test_timer) >= 1);
+  TEST_ASSERT_TRUE(pal_timer_read(&test_timer) >= 1);
   TEST_ASSERT_FALSE(pal_timer_is_ready(&test_timer));
 }
 

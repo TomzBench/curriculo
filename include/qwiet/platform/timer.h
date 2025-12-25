@@ -34,7 +34,7 @@ int
 pal_timer_fd(pal_timer_t *timer);
 
 uint64_t
-pal_timer_ack(pal_timer_t *timer);
+pal_timer_read(pal_timer_t *timer);
 
 bool
 pal_timer_is_ready(pal_timer_t *timer);

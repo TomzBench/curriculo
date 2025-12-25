@@ -50,7 +50,7 @@ pal_timer_fd(pal_timer_t *timer)
 }
 
 uint64_t
-pal_timer_ack(pal_timer_t *timer)
+pal_timer_read(pal_timer_t *timer)
 {
   uint64_t expirations;
   ssize_t ret = read(timer->fd, &expirations, sizeof(expirations));

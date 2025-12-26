@@ -1,0 +1,21 @@
+config PAL_POSIX
+    bool "POSIX trait"
+    default y if PLATFORM_LINUX || PLATFORM_PINENOTE
+    help
+      Include POSIX-compatible APIs (net, sem, time).
+
+if PAL_POSIX
+
+config PAL_POSIX_NET
+    bool "Network support"
+    default y
+
+config PAL_POSIX_SEM
+    bool "Semaphore support"
+    default y
+
+config PAL_POSIX_TIME
+    bool "Time support"
+    default y
+
+endif # PAL_POSIX

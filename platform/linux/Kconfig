@@ -1,0 +1,24 @@
+config PAL_LINUX
+    bool "Linux trait"
+    default y if PLATFORM_LINUX || PLATFORM_PINENOTE
+    select PAL_POSIX
+    help
+      Include Linux-specific APIs (evdev, timer, event).
+
+if PAL_LINUX
+
+config PAL_LINUX_EVDEV
+    bool "evdev input support"
+    default y
+    help
+      Enable libevdev-based input handling.
+
+config PAL_LINUX_TIMER
+    bool "Timer support"
+    default y
+
+config PAL_LINUX_EVENT
+    bool "Event support"
+    default y
+
+endif # PAL_LINUX

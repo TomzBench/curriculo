@@ -1,0 +1,30 @@
+mainmenu "Qwiet Configuration"
+
+choice PLATFORM
+    prompt "Target Platform"
+    default PLATFORM_LINUX
+
+config PLATFORM_LINUX
+    bool "Linux Desktop"
+    help
+      Build for standard Linux desktop environment.
+
+config PLATFORM_PINENOTE
+    bool "PineNote"
+    help
+      Build for PineNote e-ink tablet.
+      Uses Linux platform traits.
+
+endchoice
+
+source "platform/Kconfig"
+
+menuconfig TESTING
+    bool "Testing Support"
+    default n
+    help
+      Enable test framework support (Unity/CMock).
+
+if TESTING
+    source "tests/diode/Kconfig"
+endif

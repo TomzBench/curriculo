@@ -5,23 +5,47 @@ Platform abstraction layer for embedded Linux and e-ink devices.
 ## Build
 
 ```bash
-cmake -B build [options]
+cmake -B build
 cmake --build build
 ```
 
-## Build Options
+## Configuration
 
-| Option              | Values              | Default | Description                        |
-| ------------------- | ------------------- | ------- | ---------------------------------- |
-| `PLATFORM`          | `linux`, `pinenote` | `linux` | Target platform                    |
-| `BUILD_TESTING`     | `ON`, `OFF`         | `OFF`   | Build test support (diode + Unity) |
-| `BUILD_SHARED_LIBS` | `ON`, `OFF`         | `OFF`   | Build shared libraries             |
+Build configuration is managed via Kconfig. See `configs/README.md` for details.
 
-## Build Permutations
+| Option         | Description                                         |
+| -------------- | --------------------------------------------------- |
+| `CONFIG`       | Config files (semicolon-separated, merged in order) |
+| `CONFIG_EXTRA` | Extra config fragments to append                    |
 
-| Command                                                 | Targets                                                 |
-| ------------------------------------------------------- | ------------------------------------------------------- |
-| `cmake -B build -DPLATFORM=linux`                       | `qwiet_pal`, `libevdev`                             |
-| `cmake -B build -DPLATFORM=linux -DBUILD_TESTING=ON`    | `qwiet_pal`, `libevdev`, `qwiet_diode`, `unity` |
-| `cmake -B build -DPLATFORM=pinenote`                    | `qwiet_pal`, `libevdev`                             |
-| `cmake -B build -DPLATFORM=pinenote -DBUILD_TESTING=ON` | `qwiet_pal`, `libevdev`, `qwiet_diode`, `unity` |
+### Available Configs
+
+| File                    | Description                |
+| ----------------------- | -------------------------- |
+| `configs/linux.conf`    | Linux desktop platform     |
+| `configs/pinenote.conf` | PineNote hardware platform |
+| `configs/testing.conf`  | Testing overlay            |
+
+### Examples
+
+```bash
+# Default (linux, no tests)
+cmake -B build
+
+# PineNote platform
+cmake -B build -DCONFIG=configs/pinenote.conf
+
+# Linux with tests (merged configs)
+cmake -B build -DCONFIG="configs/linux.conf;configs/testing.conf"
+
+# Or using overlay
+cmake -B build -DCONFIG=configs/linux.conf -DCONFIG_EXTRA=configs/testing.conf
+```
+
+## Running Tests
+
+```bash
+cmake -B build -DCONFIG="configs/linux.conf;configs/testing.conf"
+cmake --build build
+ctest --test-dir build
+```

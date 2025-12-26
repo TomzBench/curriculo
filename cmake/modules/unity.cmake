@@ -11,6 +11,13 @@
 
 include_guard(GLOBAL)
 
+# Derive platform string from Kconfig
+if(CONFIG_PLATFORM_PINENOTE OR CONFIG_PLATFORM_LINUX)
+    set(UNITY_PLATFORM_STRING "linux")
+else()
+    message(FATAL_ERROR "unity.cmake: No platform selected in Kconfig")
+endif()
+
 # Find required tools
 find_program(RUBY_EXECUTABLE ruby REQUIRED)
 find_program(PYTHON_EXECUTABLE python3 REQUIRED)
@@ -23,7 +30,8 @@ set_property(GLOBAL PROPERTY CMOCK_FUNC_NAME_LIST_PY "${CMAKE_SOURCE_DIR}/tools/
 set_property(GLOBAL PROPERTY CMOCK_CFG_FILE "${CMAKE_SOURCE_DIR}/cmake/modules/unity_cfg.yaml")
 set_property(GLOBAL PROPERTY CMOCK_CONFIG_H "${CMAKE_SOURCE_DIR}/cmake/modules/unity_config.h")
 set_property(
-    GLOBAL PROPERTY CMOCK_GENERIC_TEARDOWN_C "${CMAKE_SOURCE_DIR}/platform/testing/${PLATFORM}/generic_teardown.c"
+    GLOBAL PROPERTY CMOCK_GENERIC_TEARDOWN_C
+                    "${CMAKE_SOURCE_DIR}/platform/testing/${UNITY_PLATFORM_STRING}/generic_teardown.c"
 )
 
 # Mock output directory (GLOBAL so functions can access)
@@ -183,17 +191,14 @@ function(cmock_handle TARGET HEADER)
     cmock_linker_wrap(${TARGET} ${HEADER})
 endfunction()
 
-# Conditionally generate mock based on platform
+# Conditionally generate mock based on Kconfig
 #
 # Usage:
-#   cmock_handle_ifdef(PLATFORM_LINUX my_target src/stubs.h)
+#   cmock_handle_ifdef(CONFIG_PAL_LINUX my_target src/stubs.h)
 #
-# Only generates mock if the specified condition matches current PLATFORM.
-# Condition should be PLATFORM_<name> where <name> matches a valid platform.
+# Only generates mock if the specified Kconfig variable is set.
 function(cmock_handle_ifdef CONDITION TARGET HEADER)
-    string(REGEX REPLACE "^PLATFORM_" "" PLATFORM_NAME "${CONDITION}")
-    string(TOLOWER "${PLATFORM_NAME}" PLATFORM_NAME_LOWER)
-    if(PLATFORM STREQUAL "${PLATFORM_NAME_LOWER}")
+    if(${CONDITION})
         cmock_handle(${TARGET} ${HEADER})
     endif()
 endfunction()

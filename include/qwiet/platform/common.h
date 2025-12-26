@@ -1,11 +1,13 @@
 #ifndef QWIET_COMMON_H
 #define QWIET_COMMON_H
 
+#include <qwiet/kconfig.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#ifdef PLATFORM_LINUX
+#ifdef CONFIG_PAL_LINUX
 #include <assert.h>
 #include <limits.h>
 #include <linux/input-event-codes.h>
@@ -37,7 +39,7 @@ extern "C" {
     }                                                                          \
   } while (0)
 
-#endif /* PLATFORM_LINUX */
+#endif /* CONFIG_PAL_LINUX */
 
 #ifdef __cplusplus
 }

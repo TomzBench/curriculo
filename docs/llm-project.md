@@ -436,6 +436,177 @@ selections, button clicks) into the same stream as raw stylus data.
 This unified stream allows the Rust layer to handle all application logic
 through a single event loop with enum pattern matching.
 
+#### Stylus Input Buffering
+
+The stylus digitizer and application run at different rates, requiring a
+lock-free buffer to decouple input capture from rendering.
+
+##### Rate Analysis
+
+| Component          | Rate      | Period   | Source                           |
+| ------------------ | --------- | -------- | -------------------------------- |
+| Wacom W9013 output | 200 Hz    | 5 ms     | Hardware interrupt, HID-over-I2C |
+| Coalescing timer   | 60-100 Hz | 10-16 ms | Application-controlled timerfd   |
+| E-ink display      | ~30 Hz    | 33 ms    | Panel refresh limit              |
+
+The input producer runs at 200 Hz (hardware-driven), while the application
+consumes batches at 60-100 Hz via a coalescing timer. This rate mismatch means
+2-4 stylus samples accumulate per batch under normal operation.
+
+##### Driver Behavior
+
+The kernel input subsystem provides these guarantees and constraints:
+
+| Layer        | Behavior                                              |
+| ------------ | ----------------------------------------------------- |
+| HID driver   | Interrupt-driven, one report per hardware event       |
+| evdev buffer | 64 events default (`EVIOCSBUFSIZE` to change)         |
+| libevdev     | Reads until `EAGAIN`, no internal limit               |
+| SYN_DROPPED  | Sent if userspace falls behind; requires state resync |
+
+Each HID report generates 4-8 `input_event` structs (position, pressure,
+optional tilt, button state changes) terminated by `SYN_REPORT`. The evdev
+buffer holds ~8-10 complete stylus samples before dropping occurs.
+
+At 60-100 Hz consumption, the application will never approach the kernel buffer
+limit under normal operation.
+
+##### Data Structures
+
+**Stylus Sample** — single point in a stroke:
+
+```c
+typedef struct {
+    uint64_t timestamp_us;   // 8 bytes — microseconds since boot
+    int32_t x;               // 4 bytes — absolute X coordinate
+    int32_t y;               // 4 bytes — absolute Y coordinate
+    int32_t pressure;        // 4 bytes — tip pressure (0-4095)
+    int16_t tilt_x;          // 2 bytes — pen tilt X axis
+    int16_t tilt_y;          // 2 bytes — pen tilt Y axis
+    uint8_t tool;            // 1 byte  — BTN_TOOL_PEN, BTN_TOOL_RUBBER, or 0
+    uint8_t buttons;         // 1 byte  — BTN_TOUCH | BTN_STYLUS | BTN_STYLUS2
+    uint8_t reserved[6];     // 6 bytes — padding for 32-byte alignment
+} stylus_sample_t;           // 32 bytes total, cache-line friendly
+```
+
+**Stylus Batch** — fixed-size array pushed to SPSC queue:
+
+```c
+#define STYLUS_BATCH_MAX_SAMPLES 8
+
+typedef struct {
+    stylus_sample_t samples[STYLUS_BATCH_MAX_SAMPLES];
+    uint8_t count;           // actual samples in this batch (1-8)
+    uint8_t reserved[7];     // padding
+} stylus_batch_t;            // 264 bytes total
+```
+
+##### Array Size Justification
+
+The batch array size of 8 samples provides a 2x safety margin:
+
+| Factor             | Calculation              | Result        |
+| ------------------ | ------------------------ | ------------- |
+| Coalesce period    | 16 ms (60 Hz push rate)  | —             |
+| Hardware period    | 5 ms (200 Hz input rate) | —             |
+| Expected samples   | 16 ms ÷ 5 ms             | 3.2 samples   |
+| Timer jitter/drift | +1-2 samples             | ~5 samples    |
+| Safety margin      | 2× expected worst case   | **8 samples** |
+
+Exceeding 8 samples requires >40 ms without a timer firing, indicating a system
+scheduling failure rather than normal operation.
+
+##### Overflow Handling
+
+If the batch fills before the timer fires (pathological scheduling), preserve
+stroke continuity by keeping the most recent samples:
+
+```c
+static inline void
+batch_push(stylus_batch_t *batch, const stylus_sample_t *sample)
+{
+    if (batch->count < STYLUS_BATCH_MAX_SAMPLES) {
+        batch->samples[batch->count++] = *sample;
+    } else {
+        // Overflow: drop oldest, shift down, append newest
+        memmove(&batch->samples[0],
+                &batch->samples[1],
+                (STYLUS_BATCH_MAX_SAMPLES - 1) * sizeof(stylus_sample_t));
+        batch->samples[STYLUS_BATCH_MAX_SAMPLES - 1] = *sample;
+        // Optionally: increment dropped sample counter for diagnostics
+    }
+}
+```
+
+This ensures the stroke endpoint is always accurate even if intermediate points
+are lost during system stress.
+
+##### SPSC Queue Implementation
+
+A hand-rolled single-producer single-consumer queue provides lock-free transfer
+between the input thread and the main application loop:
+
+```c
+#include <stdatomic.h>
+#include <stdbool.h>
+#include <stdint.h>
+
+#define SPSC_CAPACITY 64  // must be power of 2 (1+ second at 60 Hz)
+
+typedef struct {
+    stylus_batch_t buf[SPSC_CAPACITY];
+    _Atomic uint32_t head;  // producer writes here
+    _Atomic uint32_t tail;  // consumer reads here
+} spsc_queue_t;
+
+static inline void
+spsc_init(spsc_queue_t *q)
+{
+    atomic_store(&q->head, 0);
+    atomic_store(&q->tail, 0);
+}
+
+static inline bool
+spsc_push(spsc_queue_t *q, const stylus_batch_t *batch)
+{
+    uint32_t h = atomic_load_explicit(&q->head, memory_order_relaxed);
+    uint32_t t = atomic_load_explicit(&q->tail, memory_order_acquire);
+    if (h - t >= SPSC_CAPACITY)
+        return false;  // queue full
+    q->buf[h & (SPSC_CAPACITY - 1)] = *batch;
+    atomic_store_explicit(&q->head, h + 1, memory_order_release);
+    return true;
+}
+
+static inline bool
+spsc_pop(spsc_queue_t *q, stylus_batch_t *batch)
+{
+    uint32_t t = atomic_load_explicit(&q->tail, memory_order_relaxed);
+    uint32_t h = atomic_load_explicit(&q->head, memory_order_acquire);
+    if (t == h)
+        return false;  // queue empty
+    *batch = q->buf[t & (SPSC_CAPACITY - 1)];
+    atomic_store_explicit(&q->tail, t + 1, memory_order_release);
+    return true;
+}
+```
+
+The complete implementation is ~50 lines with no external dependencies. Power-
+of-2 capacity enables efficient index wrapping via bitwise AND.
+
+**Queue sizing**: 64 batches × 264 bytes ≈ 17 KB, providing 1+ second of
+buffering at 60 Hz push rate. This exceeds any realistic consumer stall.
+
+##### Alternative: liblfds
+
+[liblfds](https://liblfds.org/) is a public-domain, battle-tested lock-free data
+structure library with SPSC queue support. Consider adopting it if the project
+requires more complex lock-free structures (MPMC queues, stacks, ring buffers
+with different semantics) to avoid reinventing well-solved problems.
+
+For the current single SPSC use case, the hand-rolled implementation above is
+sufficient and avoids adding a dependency.
+
 ### LVGL FFI
 
 Wrap only the required LVGL functions:

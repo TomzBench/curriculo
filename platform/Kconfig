@@ -1,0 +1,6 @@
+menu "Platform Abstraction Layer"
+
+source "platform/posix/Kconfig"
+source "platform/linux/Kconfig"
+
+endmenu

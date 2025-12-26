@@ -7,22 +7,28 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# Platform selection (default to linux)
-set(PLATFORM "linux" CACHE STRING "Target platform (linux, pinenote)")
-set_property(CACHE PLATFORM PROPERTY STRINGS linux pinenote)
+# Kconfig-based configuration
+include(kconfig)
 
-if(NOT PLATFORM MATCHES "^(linux|pinenote)$")
-    message(FATAL_ERROR "Invalid PLATFORM: ${PLATFORM}. Must be 'linux' or 'pinenote'")
+# Configuration files (semicolon-separated list, merged in order)
+set(CONFIG "" CACHE STRING "Config files (e.g. configs/linux.conf;configs/testing.conf)")
+set(CONFIG_EXTRA "" CACHE STRING "Extra config fragments to append")
+
+if(NOT CONFIG)
+    set(CONFIG "${CMAKE_SOURCE_DIR}/configs/linux.conf")
 endif()
 
-message(STATUS "Building for platform: ${PLATFORM}")
+# Process Kconfig
+kconfig_configure(
+    KCONFIG_ROOT "${CMAKE_SOURCE_DIR}/Kconfig" CONFIG_FILES "${CONFIG}" EXTRA_CONFIGS ${CONFIG_EXTRA}
+)
 
-# Platform abstraction layer (composes traits based on PLATFORM)
+# Platform abstraction layer (composes traits based on Kconfig)
 add_subdirectory(platform)
 
-# Test support library (cmake -DBUILD_TESTING=ON)
-option(BUILD_TESTING "Build test support" OFF)
-if(BUILD_TESTING)
+# Test support (CONFIG_TESTING=y in Kconfig)
+if(CONFIG_TESTING)
+    set(BUILD_TESTING ON)
     set(MEMORYCHECK_COMMAND_OPTIONS "--leak-check=full --track-fds=yes --error-exitcode=1")
     include(CTest)
     add_subdirectory(platform/testing/diode)

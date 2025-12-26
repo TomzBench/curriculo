@@ -1,0 +1,9 @@
+config DIODE_TEST_NET
+    bool "Network mock tests"
+    default y
+    depends on PAL_POSIX_NET
+
+config DIODE_TEST_EVDEV
+    bool "evdev mock tests"
+    default y
+    depends on PAL_LINUX_EVDEV

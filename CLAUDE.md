@@ -1,17 +1,21 @@
-# Claude Code Guidelines
+# Qwiet
 
-## Environment
+Qwiet is a PineNote drawing application w/ LLM features
+
+## Claude Code Guidelines
+
+### Environment
 
 Always use project-local tooling. For Python, use uv: `uv run ruff`,
 `uv run cmake-format`, `uv run python`, etc.
 
-## Config Files
+### Config Files
 
 Keep `pyproject.toml` minimal (project metadata + deps only). Tool configs go in
 dedicated files: `.clang-format`, `.cmake-format.yaml`, `ruff.toml`,
 `pyrightconfig.json`, `.mypy.ini`.
 
-## Before Commit
+### Before Commit
 
 Run all code through formatters before presenting for commit:
 
@@ -23,7 +27,7 @@ Run all code through formatters before presenting for commit:
 If a formatter config doesn't exist for a file type, stop and create one before
 proceeding. Never commit code formatted with implicit defaults.
 
-## Domain-Specific Conventions
+### Domain-Specific Conventions
 
 Check these READMEs when working in their respective areas:
 

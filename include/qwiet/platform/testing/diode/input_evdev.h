@@ -107,4 +107,4 @@ diode_evdev_create_expectation(int ret, int type, int code, int value);
 }
 #endif
 
-#endif /* PLATFORM_LINUX */
+#endif /* DIODE_INPUT_EVDEV_H */

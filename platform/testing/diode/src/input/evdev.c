@@ -1,11 +1,11 @@
 #include "unity.h"
-#include "unity_mock_input_evdev.h"
-#include <qwiet/platform/testing/diode/input_evdev.h>
+#include "unity_mock_libevdev.h"
+#include <qwiet/platform/testing/diode/input/evdev.h>
 
 static struct pal_list_head __list;
 
 static int
-__verify_next_event(pal_input_evdev_t *dev,
+__verify_next_event(struct libevdev *dev,
                     unsigned int flags,
                     struct input_event *ev,
                     int ncalls)
@@ -19,7 +19,7 @@ __verify_next_event(pal_input_evdev_t *dev,
 
   node = __list.next;
   TEST_ASSERT_NOT_NULL_MESSAGE(node,
-                               "pal_input_evdev_next_event called but no "
+                               "libevdev_next_event called but no "
                                "expectations queued");
 
   expect = pal_list_entry(node, struct evdev_expectation, node);
@@ -41,7 +41,7 @@ void
 diode_evdev_init(void)
 {
   pal_list_init(&__list);
-  __wrap_pal_input_evdev_next_event_Stub(__verify_next_event);
+  __wrap_libevdev_next_event_Stub(__verify_next_event);
 }
 
 void
@@ -63,7 +63,7 @@ diode_evdev_verify(void)
 {
   TEST_ASSERT_TRUE_MESSAGE(
       pal_list_empty(&__list),
-      "pal_input_evdev_next_event called fewer times than expected");
+      "libevdev_next_event called fewer times than expected");
 }
 
 struct evdev_expectation *

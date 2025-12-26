@@ -3,12 +3,7 @@
 
 #include <qwiet/platform/common.h>
 #include <qwiet/platform/common/list.h>
-#include <qwiet/platform/linux/input_evdev.h>
-
-// NOTE: The PAL abstraction layer does not currently expose error types.
-// All failures return -1. When error type support is added, expand this
-// interface with specific error expectations (e.g., EXPECT_EVDEV_EAGAIN,
-// EXPECT_EVDEV_EIO).
+#include <qwiet/platform/linux/input/evdev.h>
 
 struct evdev_expectation {
   struct pal_list_head node;
@@ -22,19 +17,19 @@ struct evdev_expectation {
 
 #define EXPECT_EVDEV_EVENT(__type, __code, __value)                            \
   diode_evdev_create_expectation(                                              \
-      PAL_INPUT_READ_STATUS_SUCCESS, (__type), (__code), (__value))
+      LIBEVDEV_READ_STATUS_SUCCESS, (__type), (__code), (__value))
 
 #define EXPECT_EVDEV_EAGAIN() diode_evdev_create_expectation(-1, 0, 0, 0)
 
 #define EXPECT_EVDEV_SYNC(__type, __code, __value)                             \
   diode_evdev_create_expectation(                                              \
-      PAL_INPUT_READ_STATUS_SYNC, (__type), (__code), (__value))
+      LIBEVDEV_READ_STATUS_SYNC, (__type), (__code), (__value))
 
 /*
  * High-level touch expectations
  *
  * These queue multiple events that together form a touch gesture.
- * Events are consumed in order by successive pal_input_evdev_next_event calls.
+ * Events are consumed in order by successive libevdev_next_event calls.
  */
 
 #define EXPECT_TOUCH_DOWN(__x, __y)                                            \

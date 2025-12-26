@@ -636,7 +636,7 @@ platform/
 include/qwiet/platform/
   common.h      # Base layer (pal_assert, pal_malloc)
   posix/        # Portable headers (time.h, sem.h, net.h)
-  linux/        # Linux-specific (event.h, timer.h, input_evdev.h)
+  linux/        # Linux-specific (event.h, timer.h, input/evdev.h)
 ```
 
 evdev lives in `linux/` because libevdev only works on Linux — no portability
@@ -652,14 +652,13 @@ gained by separating it.
 **Zero-cost escape hatches**: Portable headers abstract for convenience;
 platform headers expose concrete types for performance-critical paths:
 
-| Level    | Include                                | Tradeoff               |
-| -------- | -------------------------------------- | ---------------------- |
-| Portable | `<qwiet/platform/posix/net.h>`         | Works on POSIX systems |
-| Platform | `<qwiet/platform/linux/input_evdev.h>` | Zero-cost, Linux-only  |
-| Raw      | `<libevdev/libevdev.h>`                | Full control, no PAL   |
+| Level    | Include                                | Tradeoff                                        |
+| -------- | -------------------------------------- | ----------------------------------------------- |
+| Portable | `<qwiet/platform/posix/net.h>`         | Works on POSIX systems                          |
+| Platform | `<qwiet/platform/linux/input/evdev.h>` | Canonical path for libevdev (uses API directly) |
 
-For high-frequency input (stylus events), applications include platform headers
-directly to avoid abstraction overhead.
+For high-frequency input (stylus events), applications include the platform
+header which exposes libevdev directly - no abstraction overhead.
 
 **Explicit dependencies**: Each trait declares what it needs in CMake.
 

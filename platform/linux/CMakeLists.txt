@@ -7,7 +7,6 @@ endif()
 
 if(CONFIG_PAL_LINUX_EVDEV)
     find_package(Libevdev REQUIRED)
-    list(APPEND LINUX_SOURCES src/input_evdev.c)
 endif()
 
 if(CONFIG_PAL_LINUX_TIMER)

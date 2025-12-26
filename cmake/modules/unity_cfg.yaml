@@ -16,7 +16,7 @@
     :exclude_setjmp_h: true
     :mock_prefix: unity_mock_
     :treat_as:
-        'pal_input_evdev_t*': 'PTR'
+        'struct libevdev*': 'PTR'
         'int8_t': 'INT8'
         'uint8_t': 'HEX8'
         'int16_t': 'INT16'
